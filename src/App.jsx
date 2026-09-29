@@ -11,6 +11,8 @@ import Register from './pages/Register';
 import ForgotPassword from './pages/ForgotPassword';
 import Layout from './components/Layout';
 import Dashboard from './pages/Dashboard';
+import MovieListing from './pages/MovieListing';
+import MovieDetails from './pages/MovieDetails';
 
 function App() {
   return (
@@ -54,7 +56,8 @@ function App() {
           >
             <Route index element={<Navigate to="/dashboard" replace />} />
             <Route path="dashboard" element={<Dashboard />} />
-            <Route path="movies" element={<Dashboard />} />
+            <Route path="movies" element={<MovieListing />} />
+            <Route path="movies/:id" element={<MovieDetails />} />
             <Route path="bookings" element={<Dashboard />} />
             <Route path="profile" element={<Dashboard />} />
           </Route>
