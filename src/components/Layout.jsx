@@ -1,11 +1,14 @@
 import React from 'react';
-import { Outlet, NavLink } from 'react-router-dom';
+import { Outlet, NavLink, useLocation } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import Navbar from './Navbar';
 import { Home, Heart, LayoutGrid, User, Film, Ticket } from 'lucide-react';
 
 const Layout = () => {
+  const location = useLocation();
+
   const navItems = [
-    { label: 'Home', icon: Home, path: '/dashboard' },
+    { label: 'Dashboard', icon: Home, path: '/dashboard' },
     { label: 'Movies', icon: Film, path: '/movies' },
     { label: 'Bookings', icon: Ticket, path: '/bookings' },
     { label: 'Profile', icon: User, path: '/profile' }
@@ -16,13 +19,28 @@ const Layout = () => {
       {/* Top Navbar */}
       <Navbar />
 
-      {/* Main Page Area */}
+      {/* Main Page Area with AnimatePresence Page Transitions */}
       <main className="flex-1 pb-24 sm:pb-8">
-        <Outlet />
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={location.pathname}
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -15 }}
+            transition={{ duration: 0.3, ease: 'easeInOut' }}
+          >
+            <Outlet />
+          </motion.div>
+        </AnimatePresence>
       </main>
 
-      {/* Bottom Floating Navigation Bar (Matches mobile & desktop style in reference UI) */}
-      <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 px-4 py-2.5 rounded-full bg-[#151c28]/95 border border-slate-800/80 shadow-2xl backdrop-blur-xl flex items-center gap-2 sm:gap-6">
+      {/* Bottom Floating Animated Navigation Bar */}
+      <motion.div
+        initial={{ y: 50, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.2, duration: 0.5, type: 'spring' }}
+        className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 px-4 py-2.5 rounded-full bg-[#151c28]/95 border border-slate-800/80 shadow-2xl backdrop-blur-xl flex items-center gap-2 sm:gap-6"
+      >
         {navItems.map((item) => {
           const Icon = item.icon;
           return (
@@ -30,19 +48,32 @@ const Layout = () => {
               key={item.label}
               to={item.path}
               className={({ isActive }) =>
-                `flex items-center gap-2 px-3.5 py-2 rounded-full text-xs font-semibold transition-all duration-200 ${
+                `relative flex items-center gap-2 px-3.5 py-2 rounded-full text-xs font-semibold transition-colors ${
                   isActive
-                    ? 'bg-amber-500 text-slate-950 shadow-md shadow-amber-500/20 font-bold'
+                    ? 'text-slate-950 font-extrabold'
                     : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
                 }`
               }
             >
-              <Icon className="w-4 h-4" />
-              <span className="hidden sm:inline">{item.label}</span>
+              {({ isActive }) => (
+                <>
+                  {isActive && (
+                    <motion.div
+                      layoutId="activeNavPill"
+                      className="absolute inset-0 bg-gradient-to-r from-amber-500 to-yellow-400 rounded-full shadow-md shadow-amber-500/20"
+                      transition={{ type: 'spring', stiffness: 350, damping: 30 }}
+                    />
+                  )}
+                  <span className="relative z-10 flex items-center gap-2">
+                    <Icon className="w-4 h-4" />
+                    <span className="hidden sm:inline">{item.label}</span>
+                  </span>
+                </>
+              )}
             </NavLink>
           );
         })}
-      </div>
+      </motion.div>
     </div>
   );
 };
