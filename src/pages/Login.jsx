@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { motion, AnimatePresence } from 'framer-motion';
+import TrailerModal from '../components/dashboard/TrailerModal';
 import {
   Film,
   Eye,
@@ -10,15 +11,17 @@ import {
   Mail,
   Lock,
   ArrowRight,
-  Sparkles,
   Play,
   Volume2,
-  Tv,
-  CheckCircle2,
+  Sparkles,
   Ticket,
   Star,
   Zap,
-  ShieldCheck
+  ShieldCheck,
+  Tv,
+  CheckCircle2,
+  Smartphone,
+  Crown
 } from 'lucide-react';
 
 const Login = () => {
@@ -29,33 +32,48 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(true);
 
-  // Live Seat Picking Interactive Demo
-  const [selectedSeats, setSelectedSeats] = useState([12, 13]);
-  const ticketPrice = 15;
-
-  // Movie Showcase Tabs
+  // Movie Showcase Data for Right Hero Side
   const heroMovies = [
     {
       id: 'm1',
-      title: 'Uncharted',
-      rating: 4.8,
-      sound: 'Dolby Atmos 7.1',
-      format: '4K Laser IMAX',
-      poster: 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=800&q=80',
-      time: '19:30 PM'
+      title: 'Dune: Part Two',
+      rating: 4.9,
+      genre: 'Sci-Fi / Action',
+      format: 'IMAX 70mm 3D',
+      duration: '166 mins',
+      poster: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80',
+      description: 'Paul Atreides unites with Chani and the Fremen while seeking revenge against the conspirators who destroyed his family.',
+      trailerUrl: 'https://www.youtube.com/watch?v=Way9Dexny3w'
     },
     {
       id: 'm2',
-      title: 'Dune: Part Two',
+      title: 'Uncharted',
+      rating: 4.8,
+      genre: 'Action / Adventure',
+      format: '4K Laser IMAX',
+      duration: '116 mins',
+      poster: 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=800&q=80',
+      description: 'Street-smart Nathan Drake is recruited by seasoned treasure hunter Sully to recover a lost fortune.',
+      trailerUrl: 'https://www.youtube.com/watch?v=eHp3MbsCBaw'
+    },
+    {
+      id: 'm3',
+      title: 'Oppenheimer',
       rating: 4.9,
-      sound: 'DTS-X Master Audio',
-      format: 'IMAX 70mm 3D',
-      poster: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80',
-      time: '21:00 PM'
+      genre: 'Biography / Drama',
+      format: 'Dolby Cinema',
+      duration: '180 mins',
+      poster: 'https://images.unsplash.com/photo-1440404653325-ab127d49abc1?auto=format&fit=crop&w=800&q=80',
+      description: 'The story of J. Robert Oppenheimer and his role in the development of the atomic bomb.',
+      trailerUrl: 'https://www.youtube.com/watch?v=uYPbbksJxIg'
     }
   ];
+
   const [activeMovieIndex, setActiveMovieIndex] = useState(0);
   const activeMovie = heroMovies[activeMovieIndex];
+
+  // Trailer Modal State
+  const [isTrailerOpen, setIsTrailerOpen] = useState(false);
 
   const from = location.state?.from?.pathname || '/dashboard';
 
@@ -83,15 +101,6 @@ const Login = () => {
     setValue('password', 'Password123!');
   };
 
-  const toggleSeat = (seatId) => {
-    if (seatId === 5 || seatId === 18) return;
-    if (selectedSeats.includes(seatId)) {
-      setSelectedSeats(selectedSeats.filter((s) => s !== seatId));
-    } else {
-      setSelectedSeats([...selectedSeats, seatId]);
-    }
-  };
-
   return (
     <div className="auth-split-container">
       {/* LEFT FORM SIDE */}
@@ -102,7 +111,7 @@ const Login = () => {
           transition={{ duration: 0.6, ease: 'easeOut' }}
           className="auth-form-content"
         >
-          {/* Logo Badge with Subtle Motion Glow */}
+          {/* Logo Badge */}
           <motion.div
             animate={{ scale: [1, 1.06, 1] }}
             transition={{ repeat: Infinity, duration: 3, ease: 'easeInOut' }}
@@ -281,33 +290,32 @@ const Login = () => {
         </motion.div>
       </div>
 
-      {/* RIGHT HERO SIDE WITH FRAMER MOTION INTERACTIVE SEAT WIDGET */}
+      {/* RIGHT HERO SIDE: ULTRA-SLEEK MODERN CINEMA SHOWCASE */}
       <div className="auth-hero-side">
-        {/* Ambient Backdrop */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#0b0f17] via-[#151c28] to-[#080c14]" />
-        
-        {/* Background Poster Overlay with smooth crossfade */}
+        {/* Background Poster Overlay with Smooth Crossfade */}
         <AnimatePresence mode="wait">
           <motion.img
             key={activeMovie.id}
             initial={{ opacity: 0 }}
-            animate={{ opacity: 0.25 }}
+            animate={{ opacity: 0.3 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.6 }}
             src={activeMovie.poster}
             alt={activeMovie.title}
-            className="absolute inset-0 w-full h-full object-cover blur-sm"
+            className="absolute inset-0 w-full h-full object-cover blur-sm scale-105"
           />
         </AnimatePresence>
 
-        {/* Top Header Bar inside Hero */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0b0f17] via-[#0b0f17]/70 to-transparent z-10 pointer-events-none" />
+
+        {/* Top Header Tag inside Hero */}
         <div className="relative z-20 flex items-center justify-between">
-          <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/80 border border-amber-500/30 text-amber-300 text-xs font-semibold backdrop-blur-md">
-            <Tv className="w-3.5 h-3.5 text-amber-400" />
-            <span>Interactive Theater Demo</span>
+          <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-bold backdrop-blur-md">
+            <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+            <span>PREMIUM MOVIE TICKETING PLATFORM</span>
           </div>
 
-          {/* Movie Switcher */}
+          {/* Interactive Movie Switcher Tabs */}
           <div className="flex items-center gap-1.5 bg-slate-900/80 border border-slate-800 p-1 rounded-full backdrop-blur-md">
             {heroMovies.map((m, idx) => (
               <button
@@ -325,114 +333,98 @@ const Login = () => {
           </div>
         </div>
 
-        {/* Center Interactive Widget with Motion Entrance */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95, y: 20 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="gold-widget-card max-w-lg mx-auto w-full my-auto"
-        >
-          {/* Movie Title & Sound Tag */}
-          <div className="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
-            <div>
-              <div className="flex items-center gap-2">
-                <h3 className="text-xl font-extrabold text-white">{activeMovie.title}</h3>
-                <span className="flex items-center gap-1 text-[11px] font-bold text-amber-400 bg-amber-400/10 px-2 py-0.5 rounded-full border border-amber-400/20">
-                  <Star className="w-3 h-3 fill-amber-400" />
-                  {activeMovie.rating}
-                </span>
-              </div>
-              <p className="text-xs text-slate-400 mt-0.5">Auditorium 4 • {activeMovie.time}</p>
-            </div>
-
-            <div className="text-right">
-              <span className="inline-flex items-center gap-1 text-xs font-semibold text-amber-400 bg-amber-500/10 px-2.5 py-1 rounded-full border border-amber-500/20">
-                <Volume2 className="w-3.5 h-3.5" />
-                {activeMovie.sound}
+        {/* Main Hero Content Area */}
+        <div className="relative z-20 max-w-xl my-auto space-y-6">
+          <div className="space-y-3">
+            <h2 className="text-4xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight">
+              Book Tickets. <br />
+              <span className="bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 bg-clip-text text-transparent">
+                Reserve Best Seats.
               </span>
-            </div>
-          </div>
-
-          {/* Interactive Screen Curve */}
-          <div className="text-center mb-4">
-            <div className="gold-screen-curve" />
-            <p className="text-[10px] tracking-widest text-amber-400 uppercase font-bold">
-              CURVED 4K LASER SCREEN
+            </h2>
+            <p className="text-slate-300 text-sm leading-relaxed max-w-md">
+              Discover blockbusters across top IMAX & Dolby Atmos theaters near your city. Enjoy zero booking fees and instant mobile QR entry.
             </p>
           </div>
 
-          {/* Interactive Seat Selection Mini Grid */}
-          <div className="seat-grid-mini">
-            {[0, 6, 12, 18].map((rowStart) => (
-              <div key={rowStart} className="seat-row-mini">
-                {[0, 1, 2, 3, 4, 5].map((col) => {
-                  const seatId = rowStart + col;
-                  const isSelected = selectedSeats.includes(seatId);
-                  const isReserved = seatId === 5 || seatId === 18;
-
-                  return (
-                    <motion.button
-                      key={seatId}
-                      whileHover={{ scale: 1.2 }}
-                      whileTap={{ scale: 0.9 }}
-                      type="button"
-                      onClick={() => toggleSeat(seatId)}
-                      className={`seat-cell ${
-                        isReserved ? 'reserved' : isSelected ? 'selected' : 'available'
-                      }`}
-                      title={
-                        isReserved
-                          ? 'Seat Reserved'
-                          : isSelected
-                          ? 'Seat Selected ($15)'
-                          : 'Click to select seat ($15)'
-                      }
-                    />
-                  );
-                })}
-              </div>
-            ))}
-          </div>
-
-          {/* Legend & Real-Time Price Calculation Widget */}
-          <div className="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between">
-            <div className="flex items-center gap-3 text-[10px] text-slate-400">
-              <div className="flex items-center gap-1">
-                <span className="w-2.5 h-2.5 rounded bg-slate-800 border border-slate-700" />
-                <span>Free</span>
-              </div>
-              <div className="flex items-center gap-1">
-                <span className="w-2.5 h-2.5 rounded bg-amber-500" />
-                <span>Selected</span>
+          {/* Now Showing Card */}
+          <motion.div
+            key={activeMovie.id}
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="p-5 rounded-3xl bg-[#151c28]/90 border border-slate-800 backdrop-blur-xl shadow-2xl flex items-center justify-between gap-4"
+          >
+            <div className="flex items-center gap-4">
+              <img
+                src={activeMovie.poster}
+                alt={activeMovie.title}
+                className="w-16 h-20 rounded-2xl object-cover border border-slate-700 shadow-md"
+              />
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-400 text-[10px] font-bold border border-amber-500/30">
+                    {activeMovie.genre}
+                  </span>
+                  <span className="text-amber-400 font-bold text-xs flex items-center gap-1">
+                    <Star className="w-3.5 h-3.5 fill-amber-400" />
+                    {activeMovie.rating}
+                  </span>
+                </div>
+                <h4 className="text-lg font-bold text-white mt-1">{activeMovie.title}</h4>
+                <p className="text-xs text-slate-400">{activeMovie.format} • {activeMovie.duration}</p>
               </div>
             </div>
 
-            <div className="flex items-center gap-2">
-              <span className="text-xs text-slate-400">
-                {selectedSeats.length} {selectedSeats.length === 1 ? 'Seat' : 'Seats'}
-              </span>
-              <motion.span
-                key={selectedSeats.length}
-                initial={{ scale: 0.8 }}
-                animate={{ scale: 1 }}
-                className="text-base font-extrabold text-slate-950 px-3 py-1 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-400 shadow-md"
-              >
-                ${selectedSeats.length * ticketPrice}
-              </motion.span>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setIsTrailerOpen(true)}
+              className="px-4 py-2.5 rounded-full bg-gradient-to-r from-amber-500 to-yellow-400 text-slate-950 font-extrabold text-xs flex items-center gap-1.5 shadow-md cursor-pointer flex-shrink-0"
+            >
+              <Play className="w-3.5 h-3.5 fill-slate-950 ml-0.5" />
+              <span>Trailer</span>
+            </motion.button>
+          </motion.div>
+
+          {/* 3 Key Feature Chips */}
+          <div className="grid grid-cols-3 gap-3">
+            <div className="p-3 rounded-2xl bg-slate-900/80 border border-slate-800 text-center space-y-1">
+              <Tv className="w-4 h-4 text-amber-400 mx-auto" />
+              <p className="text-[11px] font-bold text-white">4K Laser IMAX</p>
+              <p className="text-[9px] text-slate-400">Ultra HD Projection</p>
+            </div>
+
+            <div className="p-3 rounded-2xl bg-slate-900/80 border border-slate-800 text-center space-y-1">
+              <Smartphone className="w-4 h-4 text-amber-400 mx-auto" />
+              <p className="text-[11px] font-bold text-white">QR Mobile Entry</p>
+              <p className="text-[9px] text-slate-400">Paperless Boarding</p>
+            </div>
+
+            <div className="p-3 rounded-2xl bg-slate-900/80 border border-slate-800 text-center space-y-1">
+              <Crown className="w-4 h-4 text-amber-400 mx-auto" />
+              <p className="text-[11px] font-bold text-white">VIP Reclining</p>
+              <p className="text-[9px] text-slate-400">Dolby Atmos Audio</p>
             </div>
           </div>
-        </motion.div>
+        </div>
 
-        {/* Hero Bottom Bar Highlights */}
+        {/* Footer */}
         <div className="relative z-20 flex items-center justify-between text-xs text-slate-400 border-t border-slate-800/80 pt-4">
           <span className="flex items-center gap-1.5 text-slate-300">
-            <CheckCircle2 className="w-4 h-4 text-amber-400" /> Instant Digital QR Boarding
+            <ShieldCheck className="w-4 h-4 text-amber-400" /> 100% Verified Secure Booking
           </span>
           <span className="flex items-center gap-1.5 text-slate-300">
-            <Ticket className="w-4 h-4 text-amber-400" /> Zero Convenience Fees
+            <Ticket className="w-4 h-4 text-amber-400" /> Instant Seat Confirmation
           </span>
         </div>
       </div>
+
+      {/* Trailer Modal Component */}
+      <TrailerModal
+        isOpen={isTrailerOpen}
+        onClose={() => setIsTrailerOpen(false)}
+        movie={activeMovie}
+      />
     </div>
   );
 };

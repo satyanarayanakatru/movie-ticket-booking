@@ -325,139 +325,30 @@ body {
   border-color: #f59e0b;
 }
 
-/* Hero Widget Container */
-.gold-widget-card {
-  background: rgba(21, 28, 40, 0.95);
-  border: 1px solid rgba(245, 158, 11, 0.3);
-  border-radius: 2rem;
+/* Holographic 3D CinePass Card Styles */
+.holographic-card {
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.95) 100%);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  border-radius: 1.75rem;
   padding: 1.5rem;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 30px rgba(245, 158, 11, 0.15);
-  backdrop-filter: blur(16px);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 35px rgba(245, 158, 11, 0.15);
+  backdrop-filter: blur(20px);
   position: relative;
-  z-index: 20;
 }
 
-.gold-screen-curve {
-  height: 4px;
-  width: 80%;
-  margin: 0 auto 0.5rem auto;
-  background: linear-gradient(90deg, transparent 0%, #f59e0b 50%, transparent 100%);
-  border-radius: 9999px;
-  box-shadow: 0 0 15px #f59e0b;
-}
-
-.seat-grid-mini {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-  align-items: center;
-  padding: 0.75rem 0;
-}
-
-.seat-row-mini {
-  display: flex;
-  gap: 0.4rem;
-}
-
-.seat-cell {
-  width: 1.35rem;
-  height: 1.35rem;
-  border-radius: 0.35rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.seat-cell.available {
-  background-color: #1e293b;
-  border: 1px solid #334155;
-}
-
-.seat-cell.available:hover {
-  background-color: #f59e0b;
-  box-shadow: 0 0 8px #f59e0b;
-}
-
-.seat-cell.selected {
-  background: var(--gold-gradient);
-  box-shadow: 0 0 10px #f59e0b;
-}
-
-.seat-cell.reserved {
-  background-color: rgba(245, 158, 11, 0.2);
-  border: 1px solid rgba(245, 158, 11, 0.3);
-  cursor: not-allowed;
-}
-
-/* Dashboard Component Styles */
-.dash-stat-card {
-  background-color: #151c28;
-  border: 1px solid #262f3e;
-  border-radius: 1.25rem;
-  padding: 1.25rem;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
-}
-
-.dash-stat-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 0.75rem;
-}
-
-.dash-stat-title {
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: #94a3b8;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.dash-stat-icon-box {
+.gold-foil-chip {
   width: 2.5rem;
-  height: 2.5rem;
-  border-radius: 0.75rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid;
+  height: 2rem;
+  border-radius: 0.5rem;
+  background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 50%, #d97706 100%);
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.4);
 }
 
-.dash-stat-value {
-  font-size: 1.875rem;
-  font-weight: 800;
-  color: #ffffff;
-  letter-spacing: -0.025em;
-}
-
-.dash-stat-footer {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-top: 0.5rem;
-  font-size: 0.75rem;
-}
-
-.dash-stat-trend {
-  color: #10b981;
-  font-weight: 700;
-}
-
-.dash-stat-subtext {
-  color: #64748b;
-}
-
-.dash-action-card {
-  background-color: #151c28;
-  border: 1px solid #262f3e;
-  border-radius: 1.25rem;
-  padding: 1.25rem;
-  transition: all 0.2s ease;
-}
-
-.dash-action-card:hover {
-  border-color: rgba(245, 158, 11, 0.4);
-  transform: translateY(-2px);
-  box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.5);
+/* Sound Wave Animation Bars */
+.sound-wave-bar {
+  width: 3px;
+  background-color: #f59e0b;
+  border-radius: 9999px;
 }
 
 /* Custom Scrollbar */

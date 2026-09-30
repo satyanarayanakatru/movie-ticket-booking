@@ -13,6 +13,7 @@ import Layout from './components/Layout';
 import Dashboard from './pages/Dashboard';
 import MovieListing from './pages/MovieListing';
 import MovieDetails from './pages/MovieDetails';
+import TheatreListing from './pages/TheatreListing';
 
 function App() {
   return (
@@ -58,6 +59,7 @@ function App() {
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="movies" element={<MovieListing />} />
             <Route path="movies/:id" element={<MovieDetails />} />
+            <Route path="theatres" element={<TheatreListing />} />
             <Route path="bookings" element={<Dashboard />} />
             <Route path="profile" element={<Dashboard />} />
           </Route>
