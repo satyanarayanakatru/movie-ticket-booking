@@ -4,6 +4,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import { AuthProvider } from './context/AuthContext';
+import { BookingProvider } from './context/BookingContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import PublicOnlyRoute from './components/PublicOnlyRoute';
 import Login from './pages/Login';
@@ -15,75 +16,79 @@ import MovieListing from './pages/MovieListing';
 import MovieDetails from './pages/MovieDetails';
 import TheatreListing from './pages/TheatreListing';
 import SeatSelection from './pages/SeatSelection';
+import TicketBooking from './pages/TicketBooking';
 
 function App() {
   return (
     <AuthProvider>
-      <Router>
-        <Routes>
-          {/* Public Only Routes (Accessible only when logged out) */}
-          <Route
-            path="/login"
-            element={
-              <PublicOnlyRoute>
-                <Login />
-              </PublicOnlyRoute>
-            }
-          />
-          <Route
-            path="/register"
-            element={
-              <PublicOnlyRoute>
-                <Register />
-              </PublicOnlyRoute>
-            }
-          />
-          <Route
-            path="/forgot-password"
-            element={
-              <PublicOnlyRoute>
-                <ForgotPassword />
-              </PublicOnlyRoute>
-            }
-          />
+      <BookingProvider>
+        <Router>
+          <Routes>
+            {/* Public Only Routes (Accessible only when logged out) */}
+            <Route
+              path="/login"
+              element={
+                <PublicOnlyRoute>
+                  <Login />
+                </PublicOnlyRoute>
+              }
+            />
+            <Route
+              path="/register"
+              element={
+                <PublicOnlyRoute>
+                  <Register />
+                </PublicOnlyRoute>
+              }
+            />
+            <Route
+              path="/forgot-password"
+              element={
+                <PublicOnlyRoute>
+                  <ForgotPassword />
+                </PublicOnlyRoute>
+              }
+            />
 
-          {/* Protected Routes (Accessible only when logged in) */}
-          <Route
-            path="/"
-            element={
-              <ProtectedRoute>
-                <Layout />
-              </ProtectedRoute>
-            }
-          >
-            <Route index element={<Navigate to="/dashboard" replace />} />
-            <Route path="dashboard" element={<Dashboard />} />
-            <Route path="movies" element={<MovieListing />} />
-            <Route path="movies/:id" element={<MovieDetails />} />
-            <Route path="theatres" element={<TheatreListing />} />
-            <Route path="seat-selection" element={<SeatSelection />} />
-            <Route path="bookings" element={<Dashboard />} />
-            <Route path="profile" element={<Dashboard />} />
-          </Route>
+            {/* Protected Routes (Accessible only when logged in) */}
+            <Route
+              path="/"
+              element={
+                <ProtectedRoute>
+                  <Layout />
+                </ProtectedRoute>
+              }
+            >
+              <Route index element={<Navigate to="/dashboard" replace />} />
+              <Route path="dashboard" element={<Dashboard />} />
+              <Route path="movies" element={<MovieListing />} />
+              <Route path="movies/:id" element={<MovieDetails />} />
+              <Route path="theatres" element={<TheatreListing />} />
+              <Route path="seat-selection" element={<SeatSelection />} />
+              <Route path="ticket-booking" element={<TicketBooking />} />
+              <Route path="bookings" element={<Dashboard />} />
+              <Route path="profile" element={<Dashboard />} />
+            </Route>
 
-          {/* Catch-all Fallback Route */}
-          <Route path="*" element={<Navigate to="/dashboard" replace />} />
-        </Routes>
+            {/* Catch-all Fallback Route */}
+            <Route path="*" element={<Navigate to="/dashboard" replace />} />
+          </Routes>
 
-        {/* Global Toast Notifications */}
-        <ToastContainer
-          position="top-right"
-          autoClose={3000}
-          hideProgressBar={false}
-          newestOnTop
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="dark"
-        />
-      </Router>
+          {/* Global Toast Notifications */}
+          <ToastContainer
+            position="top-right"
+            autoClose={3000}
+            hideProgressBar={false}
+            newestOnTop
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="dark"
+          />
+        </Router>
+      </BookingProvider>
     </AuthProvider>
   );
 }

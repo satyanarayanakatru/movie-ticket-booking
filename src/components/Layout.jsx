@@ -2,7 +2,7 @@ import React from 'react';
 import { Outlet, NavLink, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import Navbar from './Navbar';
-import { Home, User, Film, Ticket } from 'lucide-react';
+import { Home, Film, Building2, Ticket } from 'lucide-react';
 
 const Layout = () => {
   const location = useLocation();
@@ -10,8 +10,8 @@ const Layout = () => {
   const navItems = [
     { label: 'Dashboard', icon: Home, path: '/dashboard' },
     { label: 'Movies', icon: Film, path: '/movies' },
-    { label: 'Bookings', icon: Ticket, path: '/bookings' },
-    { label: 'Profile', icon: User, path: '/profile' }
+    { label: 'Theatres', icon: Building2, path: '/theatres' },
+    { label: 'Bookings', icon: Ticket, path: '/ticket-booking' }
   ];
 
   return (

@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { fetchMoviesFromAPI } from '../services/movieApi';
+import SkeletonLoader from '../components/ui/SkeletonLoader';
 
 import {
   Film,
@@ -27,7 +29,6 @@ import TrailerModal from '../components/dashboard/TrailerModal';
 
 import {
   mockDashboardStats,
-  mockUpcomingMovies,
   mockRecentBookings,
   mockRevenueBreakdown
 } from '../data/mockDashboardData';
@@ -38,6 +39,19 @@ const Dashboard = () => {
 
   const [selectedMovieForTrailer, setSelectedMovieForTrailer] = useState(null);
   const [isTrailerOpen, setIsTrailerOpen] = useState(false);
+  const [apiMovies, setApiMovies] = useState([]);
+  const [loadingMovies, setLoadingMovies] = useState(true);
+
+  // Fetch TMDB API movies on component mount
+  useEffect(() => {
+    const getMovies = async () => {
+      setLoadingMovies(true);
+      const data = await fetchMoviesFromAPI();
+      setApiMovies(data);
+      setLoadingMovies(false);
+    };
+    getMovies();
+  }, []);
 
   const handleOpenTrailer = (movie) => {
     setSelectedMovieForTrailer(movie);
@@ -88,10 +102,10 @@ const Dashboard = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
         <StatCard
           title="Total Movies"
-          value={mockDashboardStats.totalMovies}
-          subtext="Active listings"
+          value={loadingMovies ? '...' : apiMovies.length || 20}
+          subtext="TMDB API Live"
           icon={Film}
-          trend="+4 new"
+          trend="Live API"
           color="#f5a623"
         />
         <StatCard
@@ -228,8 +242,8 @@ const Dashboard = () => {
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-xl font-bold text-white">Upcoming Movies</h2>
-            <p className="text-xs text-slate-400">Blockbusters coming soon to theatres</p>
+            <h2 className="text-xl font-bold text-white">Popular TMDB Movies</h2>
+            <p className="text-xs text-slate-400">Live trending movies fetched directly from TMDB API</p>
           </div>
           <button
             onClick={() => navigate('/movies')}
@@ -240,9 +254,20 @@ const Dashboard = () => {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {mockUpcomingMovies.map((movie) => (
-            <UpcomingMovieCard key={movie.id} movie={movie} onWatchTrailer={handleOpenTrailer} />
-          ))}
+          {loadingMovies ? (
+            Array.from({ length: 4 }).map((_, idx) => (
+              <SkeletonLoader key={idx} type="card" />
+            ))
+          ) : (
+            apiMovies.slice(0, 4).map((movie, index) => (
+              <UpcomingMovieCard
+                key={movie.id}
+                movie={movie}
+                index={index}
+                onWatchTrailer={handleOpenTrailer}
+              />
+            ))
+          )}
         </div>
       </div>
 

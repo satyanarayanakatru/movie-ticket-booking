@@ -5,10 +5,7 @@ import {
   Building2,
   MapPin,
   Phone,
-  Mail,
   Film,
-  Clock,
-  Tv,
   Sparkles,
   Ticket,
   Star
@@ -19,6 +16,45 @@ const TheatreModal = ({ isOpen, onClose, theatre }) => {
   const navigate = useNavigate();
 
   if (!isOpen || !theatre) return null;
+
+  const handleSelectShowTime = (show, timing) => {
+    onClose();
+    navigate('/seat-selection', {
+      state: {
+        movieId: show.movieId,
+        movieTitle: show.title,
+        moviePoster: show.poster,
+        genre: show.genre,
+        theatreId: theatre.id,
+        theatreName: theatre.name,
+        city: theatre.city,
+        showDate: 'Today, 30 Sep 2026',
+        showTime: timing.time,
+        screen: timing.screen
+      }
+    });
+  };
+
+  const handleBookFirstAvailable = () => {
+    onClose();
+    const firstShow = theatre.shows[0];
+    const firstTiming = firstShow ? firstShow.timings[0] : { time: '07:30 PM', screen: 'Screen 1' };
+    
+    navigate('/seat-selection', {
+      state: {
+        movieId: firstShow ? firstShow.movieId : '101',
+        movieTitle: firstShow ? firstShow.title : 'Uncharted',
+        moviePoster: firstShow ? firstShow.poster : 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=300&q=80',
+        genre: firstShow ? firstShow.genre : 'Action',
+        theatreId: theatre.id,
+        theatreName: theatre.name,
+        city: theatre.city,
+        showDate: 'Today, 30 Sep 2026',
+        showTime: firstTiming.time,
+        screen: firstTiming.screen
+      }
+    });
+  };
 
   return (
     <AnimatePresence>
@@ -109,7 +145,7 @@ const TheatreModal = ({ isOpen, onClose, theatre }) => {
           <div className="space-y-4 pt-2">
             <h4 className="text-sm font-bold text-white flex items-center gap-2">
               <Film className="w-4 h-4 text-amber-400" />
-              <span>Now Showing & Available Show Timings</span>
+              <span>Click any timing below to select seats directly</span>
             </h4>
 
             <div className="space-y-4">
@@ -130,20 +166,20 @@ const TheatreModal = ({ isOpen, onClose, theatre }) => {
                     </div>
                   </div>
 
-                  {/* Timings Pills */}
+                  {/* Interactive Timings Pills -> Direct to Seat Selection */}
                   <div className="flex flex-wrap items-center gap-2">
                     {show.timings.map((t, idx) => (
-                      <button
+                      <motion.button
                         key={idx}
-                        onClick={() => {
-                          onClose();
-                          navigate('/movies');
-                        }}
-                        className="px-3 py-1.5 rounded-xl bg-[#151c28] border border-slate-700 hover:border-amber-500 text-xs font-semibold text-slate-200 hover:text-amber-400 flex flex-col items-center cursor-pointer transition-all"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={() => handleSelectShowTime(show, t)}
+                        className="px-3.5 py-2 rounded-xl bg-[#151c28] border border-slate-700 hover:border-amber-500 text-xs font-bold text-slate-200 hover:text-amber-400 flex flex-col items-center cursor-pointer transition-all shadow-sm"
+                        title={`Select seats for ${show.title} at ${t.time}`}
                       >
                         <span>{t.time}</span>
-                        <span className="text-[9px] text-slate-400">{t.screen}</span>
-                      </button>
+                        <span className="text-[9px] text-slate-400 font-normal">{t.screen}</span>
+                      </motion.button>
                     ))}
                   </div>
                 </div>
@@ -156,14 +192,11 @@ const TheatreModal = ({ isOpen, onClose, theatre }) => {
             <motion.button
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.96 }}
-              onClick={() => {
-                onClose();
-                navigate('/movies');
-              }}
+              onClick={handleBookFirstAvailable}
               className="px-6 py-3 rounded-full bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-slate-950 font-extrabold text-xs flex items-center gap-2 cursor-pointer shadow-lg shadow-amber-500/10"
             >
               <Ticket className="w-4 h-4" />
-              <span>Select Movie & Book Seats</span>
+              <span>Select Seats Now</span>
             </motion.button>
           </div>
         </motion.div>

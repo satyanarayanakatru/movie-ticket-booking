@@ -10,10 +10,7 @@ import {
   Clock,
   Globe,
   ArrowLeft,
-  Ticket,
-  Film,
-  UserCheck,
-  Sparkles
+  Ticket
 } from 'lucide-react';
 
 const MovieDetails = () => {
@@ -33,6 +30,25 @@ const MovieDetails = () => {
     };
     loadMovie();
   }, [id]);
+
+  const handleBookMovieSeats = () => {
+    if (!movie) return;
+    navigate('/seat-selection', {
+      state: {
+        movieId: movie.id,
+        movieTitle: movie.title,
+        moviePoster: movie.poster,
+        genre: movie.genre,
+        rating: movie.rating,
+        theatreId: 'th-101',
+        theatreName: 'PVR IMAX, Forum Mall',
+        city: 'Hyderabad',
+        showDate: 'Today, 30 Sep 2026',
+        showTime: '07:30 PM',
+        screen: 'Screen 1 (IMAX 4K)'
+      }
+    });
+  };
 
   if (loading) {
     return (
@@ -164,11 +180,11 @@ const MovieDetails = () => {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={() => navigate('/theatres')}
+                onClick={handleBookMovieSeats}
                 className="px-8 py-3.5 rounded-full bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-slate-950 text-xs font-extrabold flex items-center gap-2 shadow-lg shadow-amber-500/20 transition-all cursor-pointer"
               >
                 <Ticket className="w-4 h-4" />
-                <span>Book Tickets & Select Seats</span>
+                <span>Select Seats & Book Tickets</span>
               </motion.button>
             </div>
           </div>
