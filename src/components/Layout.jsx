@@ -11,7 +11,7 @@ const Layout = () => {
     { label: 'Dashboard', icon: Home, path: '/dashboard' },
     { label: 'Movies', icon: Film, path: '/movies' },
     { label: 'Theatres', icon: Building2, path: '/theatres' },
-    { label: 'Bookings', icon: Ticket, path: '/ticket-booking' }
+    { label: 'Bookings', icon: Ticket, path: '/bookings' }
   ];
 
   return (
