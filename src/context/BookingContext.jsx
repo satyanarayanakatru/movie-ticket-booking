@@ -55,9 +55,10 @@ export const BookingProvider = ({ children }) => {
   };
 
   // Prevent Duplicate Booking
-  const isDuplicateBooking = (theatreId, showDate, showTime, selectedSeats) => {
-    return bookings.some((b) => {
-      if (b.status === 'Cancelled') return false;
+  const isDuplicateBooking = (theatreId, showDate, showTime, selectedSeats = []) => {
+    if (!Array.isArray(selectedSeats) || selectedSeats.length === 0) return false;
+    return (bookings || []).some((b) => {
+      if (!b || b.status === 'Cancelled' || b.status === 'Pending Payment') return false;
       const sameSession =
         b.theatreId === theatreId &&
         b.showDate === showDate &&
@@ -65,13 +66,11 @@ export const BookingProvider = ({ children }) => {
 
       if (!sameSession) return false;
 
-      // Check seat overlap
-      const hasOverlap = selectedSeats.some((seat) => b.seats.includes(seat));
-      return hasOverlap;
+      return Array.isArray(b.seats) && selectedSeats.some((seat) => b.seats.includes(seat));
     });
   };
 
-  // Confirm new booking
+  // Create pending booking
   const createBooking = (bookingPayload) => {
     const { theatreId, showDate, showTime, selectedSeats } = bookingPayload;
 
@@ -84,13 +83,12 @@ export const BookingProvider = ({ children }) => {
     const newBooking = {
       ...bookingPayload,
       id: bookingId,
-      status: 'Confirmed',
+      status: 'Pending Payment',
       createdAt: new Date().toISOString()
     };
 
     const updated = [newBooking, ...bookings];
     setBookings(updated);
-    toast.success(`Booking Confirmed! Unique Booking ID: ${bookingId}`);
     return { success: true, booking: newBooking };
   };
 
@@ -103,12 +101,13 @@ export const BookingProvider = ({ children }) => {
     toast.info(`Booking ${bookingId} has been cancelled.`);
   };
 
-  // Update payment status
+  // Update payment status & confirm booking upon payment completion
   const updatePaymentInfo = (bookingId, transactionId, paymentMethod) => {
     const updated = bookings.map((b) =>
       b.id === bookingId
         ? {
             ...b,
+            status: 'Confirmed',
             paymentStatus: 'Paid',
             transactionId: transactionId,
             paymentMethod: paymentMethod,
@@ -117,7 +116,7 @@ export const BookingProvider = ({ children }) => {
         : b
     );
     setBookings(updated);
-    toast.success(`Payment Successful! Transaction ID: ${transactionId}`);
+    toast.success(`Booking Confirmed & Payment Successful! Transaction ID: ${transactionId}`);
   };
 
   return (
