@@ -17,10 +17,18 @@ const RecentBookingsTable = ({ bookings }) => {
   const getStatusBadge = (status) => {
     switch (status) {
       case 'Confirmed':
+      case 'Paid':
         return (
           <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center gap-1 w-max">
             <CheckCircle2 className="w-3.5 h-3.5" />
-            Confirmed
+            {status === 'Paid' ? 'Paid & Confirmed' : 'Confirmed'}
+          </span>
+        );
+      case 'Pending Payment':
+        return (
+          <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/20 flex items-center gap-1 w-max">
+            <Clock className="w-3.5 h-3.5" />
+            Pending Payment
           </span>
         );
       case 'Completed':
@@ -38,7 +46,11 @@ const RecentBookingsTable = ({ bookings }) => {
           </span>
         );
       default:
-        return status;
+        return (
+          <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-slate-800 text-slate-300 border border-slate-700 flex items-center gap-1 w-max">
+            {status}
+          </span>
+        );
     }
   };
 

@@ -18,6 +18,8 @@ import TheatreListing from './pages/TheatreListing';
 import SeatSelection from './pages/SeatSelection';
 import TicketBooking from './pages/TicketBooking';
 import Payment from './pages/Payment';
+import BookingHistory from './pages/BookingHistory';
+import Reports from './pages/Reports';
 
 function App() {
   return (
@@ -68,7 +70,8 @@ function App() {
               <Route path="seat-selection" element={<SeatSelection />} />
               <Route path="ticket-booking" element={<TicketBooking />} />
               <Route path="payment" element={<Payment />} />
-              <Route path="bookings" element={<Dashboard />} />
+              <Route path="bookings" element={<BookingHistory />} />
+              <Route path="reports" element={<Reports />} />
               <Route path="profile" element={<Dashboard />} />
             </Route>
 
