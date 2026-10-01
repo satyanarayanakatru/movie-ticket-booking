@@ -1,25 +1,30 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import React from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-import { AuthProvider } from './context/AuthContext';
-import { BookingProvider } from './context/BookingContext';
-import ProtectedRoute from './components/ProtectedRoute';
-import PublicOnlyRoute from './components/PublicOnlyRoute';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import ForgotPassword from './pages/ForgotPassword';
-import Layout from './components/Layout';
-import Dashboard from './pages/Dashboard';
-import MovieListing from './pages/MovieListing';
-import MovieDetails from './pages/MovieDetails';
-import TheatreListing from './pages/TheatreListing';
-import SeatSelection from './pages/SeatSelection';
-import TicketBooking from './pages/TicketBooking';
-import Payment from './pages/Payment';
-import BookingHistory from './pages/BookingHistory';
-import Reports from './pages/Reports';
+import { AuthProvider } from "./context/AuthContext";
+import { BookingProvider } from "./context/BookingContext";
+import ProtectedRoute from "./components/ProtectedRoute";
+import PublicOnlyRoute from "./components/PublicOnlyRoute";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import ForgotPassword from "./pages/ForgotPassword";
+import Layout from "./components/Layout";
+import Dashboard from "./pages/Dashboard";
+import MovieListing from "./pages/MovieListing";
+import MovieDetails from "./pages/MovieDetails";
+import TheatreListing from "./pages/TheatreListing";
+import SeatSelection from "./pages/SeatSelection";
+import TicketBooking from "./pages/TicketBooking";
+import Payment from "./pages/Payment";
+import BookingHistory from "./pages/BookingHistory";
+import Reports from "./pages/Reports";
 
 function App() {
   return (
